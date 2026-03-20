@@ -1,12 +1,16 @@
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(cors({
+  origin: "https://ambitious-river-0e94dcc00.6.azurestaticapps.net",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+}));
 
-app.use(cors());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Gateway service is running successfully!");
