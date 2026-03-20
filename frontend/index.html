@@ -19,9 +19,7 @@
       border-radius: 12px;
       box-shadow: 0 4px 14px rgba(0,0,0,0.1);
     }
-    h1 {
-      color: #0078d4;
-    }
+    h1 { color: #0078d4; }
     button {
       padding: 12px 20px;
       border: none;
@@ -31,14 +29,13 @@
       font-size: 16px;
       cursor: pointer;
     }
-    button:hover {
-      background: #005ea2;
-    }
+    button:hover { background: #005ea2; }
     #result {
       margin-top: 20px;
       font-size: 18px;
       color: green;
       word-break: break-word;
+      white-space: pre-wrap;
     }
   </style>
 </head>
@@ -58,12 +55,20 @@
     async function checkHealth() {
       const result = document.getElementById("result");
       result.innerText = "Checking...";
+
       try {
-        const res = await fetch(`${API_URL}/health`);
-        const data = await res.json();
-        result.innerText = `Gateway response: ${JSON.stringify(data)}`;
+        const res = await fetch(`${API_URL}/health`, {
+          method: "GET",
+          headers: { "Accept": "application/json" }
+        });
+
+        result.innerText = `HTTP ${res.status} ${res.statusText}`;
+
+        const text = await res.text();
+        result.innerText += `\nResponse: ${text}`;
       } catch (err) {
-        result.innerText = "Failed to connect to gateway.";
+        console.error("Fetch error:", err);
+        result.innerText = `Failed to connect to gateway.\nError: ${err.message}`;
       }
     }
   </script>
