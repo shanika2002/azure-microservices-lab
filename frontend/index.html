@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Azure Microservices Lab Frontend</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      text-align: center;
+      background: #f4f6f8;
+    }
+    .card {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #0078d4;
+    }
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #0078d4;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005ea2;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      color: green;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Azure Microservices Lab</h1>
+    <p>This frontend is hosted using Azure Static Web Apps.</p>
+    <p>Click the button below to test the deployed gateway service.</p>
+
+    <button onclick="checkHealth()">Check Gateway Health</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const API_URL = "https://gateway.gentlehill-571d6cde.southeastasia.azurecontainerapps.io";
+
+    async function checkHealth() {
+      const result = document.getElementById("result");
+      result.innerText = "Checking...";
+      try {
+        const res = await fetch(`${API_URL}/health`);
+        const data = await res.json();
+        result.innerText = `Gateway response: ${JSON.stringify(data)}`;
+      } catch (err) {
+        result.innerText = "Failed to connect to gateway.";
+      }
+    }
+  </script>
+</body>
+</html>
