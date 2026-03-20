@@ -46,6 +46,7 @@
     <p>Click the button below to test the deployed gateway service.</p>
 
     <button onclick="checkHealth()">Check Gateway Health</button>
+    <button onclick="getItems()">Get Items</button>
     <div id="result"></div>
   </div>
 
@@ -69,6 +70,26 @@
       } catch (err) {
         console.error("Fetch error:", err);
         result.innerText = `Failed to connect to gateway.\nError: ${err.message}`;
+      }
+    }
+
+    async function getItems() {
+      const result = document.getElementById("result");
+      result.innerText = "Fetching items...";
+
+      try {
+        const res = await fetch(`${API_URL}/api/items`, {
+          method: "GET",
+          headers: { "Accept": "application/json" }
+        });
+
+        result.innerText = `HTTP ${res.status} ${res.statusText}`;
+
+        const items = await res.json();
+        result.innerText += `\nItems: ${JSON.stringify(items, null, 2)}`;
+      } catch (err) {
+        console.error("Fetch error:", err);
+        result.innerText = `Failed to fetch items.\nError: ${err.message}`;
       }
     }
   </script>
